@@ -17,7 +17,7 @@ import type {
   UserDrillDto,
 } from '@/types';
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = '';
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
