@@ -10,7 +10,9 @@ import { EditDrillModal } from '@/components/drill/edit-drill-modal';
 import { useDrills } from '@/hooks/use-drills';
 import { useUsers } from '@/hooks/use-users';
 import { useUserDrills } from '@/hooks/use-userdrills';
-import type { DrillDto, UserDrillDto } from '@/types';
+import type { DrillDto, UserDrillDto } from '@/lib/api-client';
+
+type ClientDrillDto = Omit<DrillDto, 'users'> & { users: UserDrillDto[] };
 
 export default function Home() {
   const { drills, isLoading: drillsLoading } = useDrills();
@@ -18,28 +20,26 @@ export default function Home() {
   const { userDrills, isLoading: userDrillsLoading } = useUserDrills('all');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedDrill, setSelectedDrill] = useState<DrillDto | null>(null);
+  const [selectedDrill, setSelectedDrill] = useState<ClientDrillDto | null>(null);
 
-  const handleEdit = (drill: DrillDto) => {
+  const handleEdit = (drill: ClientDrillDto) => {
     setSelectedDrill(drill);
     setIsEditModalOpen(true);
   };
 
   const isLoading = drillsLoading || usersLoading || userDrillsLoading;
 
-  // Combine drills with their userDrill sessions and sort by ID
   const drillsWithSessions = useMemo(() => {
     return drills
       .map((drill) => {
-        // Find all UserDrill records for this drill
         const drillSessions = userDrills.filter((ud) => ud.drillId === drill.id);
 
         return {
           ...drill,
-          users: drillSessions, // Replace UserDto[] with UserDrillDto[]
-        } as DrillDto;
+          users: drillSessions,
+        } as ClientDrillDto;
       })
-      .sort((a, b) => a.id - b.id); // Sort by ID ascending (oldest first)
+      .sort((a, b) => (a.id || 0) - (b.id || 0));
   }, [drills, userDrills]);
 
   return (

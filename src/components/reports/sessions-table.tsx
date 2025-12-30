@@ -51,13 +51,12 @@ export function SessionsTable({ userDrills }: SessionsTableProps) {
           comparison = new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime();
           break;
         case 'stoppedAt':
-          // Active sessions (null stoppedAt) should be first when sorting descending
           if (a.stoppedAt === null && b.stoppedAt === null) {
             comparison = 0;
           } else if (a.stoppedAt === null) {
-            comparison = 1; // a is active, put it after when asc, before when desc
+            comparison = 1;
           } else if (b.stoppedAt === null) {
-            comparison = -1; // b is active
+            comparison = -1;
           } else {
             comparison = new Date(a.stoppedAt).getTime() - new Date(b.stoppedAt).getTime();
           }
@@ -274,7 +273,6 @@ export function SessionsTable({ userDrills }: SessionsTableProps) {
                             if (deletingSessionId === ud.id) return;
 
                             if (confirmDeleteSessionId === ud.id) {
-                              // Second click - delete
                               setDeletingSessionId(ud.id);
                               setConfirmDeleteSessionId(null);
                               try {
@@ -283,7 +281,6 @@ export function SessionsTable({ userDrills }: SessionsTableProps) {
                                 setDeletingSessionId(null);
                               }
                             } else {
-                              // First click - ask for confirmation
                               setConfirmDeleteSessionId(ud.id);
                               setTimeout(() => setConfirmDeleteSessionId(null), 3000);
                             }

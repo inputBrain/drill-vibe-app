@@ -29,7 +29,6 @@ export function EditDrillModal({
   const [pricePerMinute, setPricePerMinute] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Update form when drill changes
   useEffect(() => {
     if (drill) {
       setTitle(drill.title);
@@ -54,12 +53,10 @@ export function EditDrillModal({
         pricePerMinute: price,
       });
 
-      // Close modal only on success
       onOpenChange(false);
     } catch (error) {
-      // Error is handled by the hook and toast - keep modal open
       console.error('Update drill error:', error);
-    } finally {
+    } finally{
       setIsSubmitting(false);
     }
   };

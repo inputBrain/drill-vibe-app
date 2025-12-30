@@ -2,9 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-/**
- * Hook for real-time timer that updates every second
- */
 export function useTimer() {
   const [currentTime, setCurrentTime] = useState(new Date());
 

@@ -1,26 +1,32 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { apiClient, type DeleteUserDrill } from '@/lib/api-client';
 import { useToast } from '@/components/providers/toast-provider';
 
 export function useUserDrills(filter?: 'all' | 'active' | 'completed') {
   const queryClient = useQueryClient();
   const { success, error } = useToast();
 
-  const queryFn =
-    filter === 'active'
-      ? api.userDrills.active
-      : filter === 'completed'
-      ? api.userDrills.completed
-      : api.userDrills.list;
+  const queryFn = async () => {
+    const allData = await apiClient.listAll();
+
+    if (filter === 'active') {
+      return (allData || []).filter(ud => ud.stoppedAt === null || ud.stoppedAt === undefined);
+    }
+
+    if (filter === 'completed') {
+      return (allData || []).filter(ud => ud.stoppedAt !== null && ud.stoppedAt !== undefined);
+    }
+
+    return allData || [];
+  };
 
   const userDrillsQuery = useQuery({
     queryKey: ['userdrills', filter || 'all'],
     queryFn: async () => {
       const data = await queryFn();
 
-      // Debug: log first item to check date format
       if (data.length > 0) {
         const sample = data[0];
         console.log('📊 UserDrills sample:', {
@@ -28,7 +34,6 @@ export function useUserDrills(filter?: 'all' | 'active' | 'completed') {
           startedAtType: typeof sample.startedAt,
           stoppedAt: sample.stoppedAt,
           stoppedAtType: typeof sample.stoppedAt,
-          // Try parsing as Unix timestamp (seconds)
           startedAtAsUnix: sample.startedAt ? new Date(Number(sample.startedAt) * 1000) : null,
           stoppedAtAsUnix: sample.stoppedAt ? new Date(Number(sample.stoppedAt) * 1000) : null,
         });
@@ -36,12 +41,12 @@ export function useUserDrills(filter?: 'all' | 'active' | 'completed') {
 
       return data;
     },
-    refetchInterval: 30000, // Refetch every 30 seconds for real-time updates
+    refetchInterval: 30000,
   });
 
   const deleteMutation = useMutation({
     mutationFn: ({ userId, drillId }: { userId: number; drillId: number }) =>
-      api.userDrills.delete(userId, drillId),
+      apiClient.deleteUserDrill({ userId, drillId } as DeleteUserDrill),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['userdrills'] }),

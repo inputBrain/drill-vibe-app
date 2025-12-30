@@ -21,7 +21,6 @@ export function EditUserDialog({ open, onOpenChange, user }: EditUserDialogProps
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ firstName?: string; lastName?: string; email?: string }>({});
 
-  // Update form when user changes
   useEffect(() => {
     if (user) {
       setFirstName(user.firstName);
@@ -41,7 +40,6 @@ export function EditUserDialog({ open, onOpenChange, user }: EditUserDialogProps
       newErrors.lastName = "Прізвище обов'язкове";
     }
 
-    // Simple email validation: just check if it contains @ symbol
     if (email.trim() && !email.includes('@')) {
       newErrors.email = "Email має містити символ @";
     }
@@ -67,11 +65,9 @@ export function EditUserDialog({ open, onOpenChange, user }: EditUserDialogProps
         email: email.trim() || null,
       });
 
-      // Reset form and close modal only on success
       setErrors({});
       onOpenChange(false);
     } catch (error) {
-      // Error is handled by the hook and toast - keep modal open
       console.error('Update user error:', error);
     } finally {
       setIsSubmitting(false);

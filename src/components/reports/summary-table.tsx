@@ -56,7 +56,6 @@ export function SummaryTable({ userDrills }: SummaryTableProps) {
         return;
       }
 
-      // Pass currentTime to trigger recalculation for active sessions
       const duration = calculateDuration(ud.startedAt, ud.stoppedAt, currentTime);
       const cost = calculateCost(duration, ud.drill.pricePerMinute);
 
@@ -79,7 +78,6 @@ export function SummaryTable({ userDrills }: SummaryTableProps) {
 
     const summariesArray = Array.from(drillMap.values());
 
-    // Sort summaries
     return summariesArray.sort((a, b) => {
       let comparison = 0;
 

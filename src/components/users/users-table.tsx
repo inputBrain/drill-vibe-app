@@ -159,7 +159,6 @@ export function UsersTable({ users, onEdit }: UsersTableProps) {
                           if (deletingUserId === user.id) return;
 
                           if (confirmDeleteUserId === user.id) {
-                            // Second click - delete
                             setDeletingUserId(user.id);
                             setConfirmDeleteUserId(null);
                             try {
@@ -168,7 +167,6 @@ export function UsersTable({ users, onEdit }: UsersTableProps) {
                               setDeletingUserId(null);
                             }
                           } else {
-                            // First click - ask for confirmation
                             setConfirmDeleteUserId(user.id);
                             setTimeout(() => setConfirmDeleteUserId(null), 3000);
                           }

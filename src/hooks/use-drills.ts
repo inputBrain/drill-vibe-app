@@ -1,8 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api';
-import type { CreateDrill, StartDrill, StopDrill, UpdateDrill } from '@/types';
+import { apiClient, type CreateDrill, type StartDrill, type StopDrill, type UpdateDrill, type DeleteDrill } from '@/lib/api-client';
 import { useToast } from '@/components/providers/toast-provider';
 
 export function useDrills() {
@@ -11,12 +10,15 @@ export function useDrills() {
 
   const drillsQuery = useQuery({
     queryKey: ['drills'],
-    queryFn: api.drills.list,
-    refetchInterval: 30000, // Refetch every 30 seconds
+    queryFn: async () => {
+      const response = await apiClient.listAllDrills();
+      return response || [];
+    },
+    refetchInterval: 30000,
   });
 
   const createMutation = useMutation({
-    mutationFn: api.drills.create,
+    mutationFn: (data: CreateDrill) => apiClient.createDrill(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['drills'] });
       success('Drill успішно створено!');
@@ -27,7 +29,7 @@ export function useDrills() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: api.drills.update,
+    mutationFn: (data: UpdateDrill) => apiClient.updateDrill(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['drills'] });
       success('Drill успішно оновлено!');
@@ -38,7 +40,7 @@ export function useDrills() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: api.drills.delete,
+    mutationFn: (drillId: number) => apiClient.deleteDrill({ drillId } as DeleteDrill),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['drills'] }),
@@ -52,7 +54,7 @@ export function useDrills() {
   });
 
   const startMutation = useMutation({
-    mutationFn: api.drills.start,
+    mutationFn: (data: StartDrill) => apiClient.startDrill(data),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['drills'] }),
@@ -66,7 +68,7 @@ export function useDrills() {
   });
 
   const stopMutation = useMutation({
-    mutationFn: api.drills.stop,
+    mutationFn: (data: StopDrill) => apiClient.stopDrill(data),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['drills'] }),

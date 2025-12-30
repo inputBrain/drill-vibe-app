@@ -39,12 +39,10 @@ export function CreateDrillModal({
       const price = parseFloat(pricePerMinute);
       await createDrill({ title: title.trim(), pricePerMinute: price });
 
-      // Reset form and close modal only on success
       setTitle('');
       setPricePerMinute('');
       onOpenChange(false);
     } catch (error) {
-      // Error is handled by the hook and toast - keep modal open
       console.error('Create drill error:', error);
     } finally {
       setIsSubmitting(false);

@@ -15,7 +15,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200',
           'disabled:opacity-50 disabled:cursor-not-allowed',
           {
-            // Variants
             'bg-gradient-to-r from-[var(--accent-blue)] to-[var(--accent-cyan)] text-white hover:opacity-90 hover:scale-105':
               variant === 'primary',
             'bg-[var(--success)] text-black hover:opacity-90 hover:scale-105':
@@ -26,7 +25,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               variant === 'secondary',
             'text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--card-background)]':
               variant === 'ghost',
-            // Sizes
             'h-8 px-3 text-sm': size === 'sm',
             'h-10 px-4 text-base': size === 'md',
             'h-12 px-6 text-lg': size === 'lg',

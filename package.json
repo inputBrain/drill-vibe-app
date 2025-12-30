@@ -6,7 +6,8 @@
     "dev": "next dev -p 2000",
     "build": "next build",
     "start": "next start -p 2000",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-api": "nswag run nswag.json"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.12",

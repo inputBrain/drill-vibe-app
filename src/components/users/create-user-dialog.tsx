@@ -30,7 +30,6 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
       newErrors.lastName = "Прізвище обов'язкове";
     }
 
-    // Simple email validation: just check if it contains @ symbol
     if (email.trim() && !email.includes('@')) {
       newErrors.email = "Email має містити символ @";
     }
@@ -55,14 +54,12 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
         email: email.trim() || null,
       });
 
-      // Reset form and close modal only on success
       setFirstName('');
       setLastName('');
       setEmail('');
       setErrors({});
       onOpenChange(false);
     } catch (error) {
-      // Error is handled by the hook and toast - keep modal open
       console.error('Create user error:', error);
     } finally {
       setIsSubmitting(false);

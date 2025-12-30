@@ -16,11 +16,9 @@ export function ActiveSessionRow({ session, onStop }: ActiveSessionRowProps) {
   const currentTime = useTimer();
   const isActive = session.stoppedAt === null;
 
-  // Calculate duration - use currentTime for real-time updates
   const duration = calculateDuration(session.startedAt, session.stoppedAt, currentTime);
   const formattedDuration = formatDuration(duration);
 
-  // Debug logging
   if (!session.user) {
     console.error('ActiveSessionRow: session.user is undefined', session);
   }

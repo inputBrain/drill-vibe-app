@@ -1,8 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api';
-import type { CreateUser, UpdateUser } from '@/types';
+import { apiClient, type CreateUser, type UpdateUser, type DeleteUser } from '@/lib/api-client';
 import { useToast } from '@/components/providers/toast-provider';
 
 export function useUsers() {
@@ -11,11 +10,14 @@ export function useUsers() {
 
   const usersQuery = useQuery({
     queryKey: ['users'],
-    queryFn: api.users.list,
+    queryFn: async () => {
+      const response = await apiClient.listAllUsers();
+      return response || [];
+    },
   });
 
   const createMutation = useMutation({
-    mutationFn: api.users.create,
+    mutationFn: (data: CreateUser) => apiClient.createUser(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['users'] });
       success('Користувача успішно створено!');
@@ -26,7 +28,7 @@ export function useUsers() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: api.users.update,
+    mutationFn: (data: UpdateUser) => apiClient.updateUser(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['users'] });
       success('Користувача успішно оновлено!');
@@ -37,7 +39,7 @@ export function useUsers() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: api.users.delete,
+    mutationFn: (userId: number) => apiClient.deleteUser({ userId } as DeleteUser),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['users'] });
       success('Користувача успішно видалено!');

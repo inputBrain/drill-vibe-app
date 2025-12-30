@@ -23,13 +23,10 @@ export function DrillCard({ drill, availableUsers, onEdit }: DrillCardProps) {
   const [isStopping, setIsStopping] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Get active sessions (only users with stoppedAt === null)
   const activeSessions = drill.users?.filter((ud) => ud.stoppedAt === null) || [];
 
-  // Get users that have active sessions in this drill
   const activeUserIds = activeSessions.map((ud) => ud.userId);
 
-  // Users can be selected if they don't have an ACTIVE session
   const selectableUsers = availableUsers.filter(
     (user) => !activeUserIds.includes(user.id)
   );
@@ -63,7 +60,7 @@ export function DrillCard({ drill, availableUsers, onEdit }: DrillCardProps) {
   };
 
   const handleDelete = async () => {
-    if (isDeleting) return; // Prevent multiple clicks
+    if (isDeleting) return;
 
     if (showDeleteConfirm) {
       setIsDeleting(true);
@@ -139,7 +136,6 @@ export function DrillCard({ drill, availableUsers, onEdit }: DrillCardProps) {
       </CardHeader>
 
       <CardContent className="flex-1 space-y-4">
-        {/* Active Users Section */}
         <div>
           <h4 className="text-sm font-medium mb-2 text-[var(--foreground-muted)]">
             Active Users:
@@ -161,7 +157,6 @@ export function DrillCard({ drill, availableUsers, onEdit }: DrillCardProps) {
           </div>
         </div>
 
-        {/* Add Users Section */}
         <div>
           <h4 className="text-sm font-medium mb-2 text-[var(--foreground-muted)]">
             Add Users:
