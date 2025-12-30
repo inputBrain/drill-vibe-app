@@ -12,7 +12,7 @@ import {
 } from '@/lib/utils';
 import { useTimer } from '@/hooks/use-timer';
 import { Trash2, Square, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
-import type { UserDrillDto } from '@/types';
+import type { UserDrillDto } from '@/lib/api-client';
 import { useUserDrills } from '@/hooks/use-userdrills';
 import { useDrills } from '@/hooks/use-drills';
 

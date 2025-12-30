@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import { Check, ChevronDown } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
-import type { UserDto } from '@/types';
+import type { UserDto } from '@/lib/api-client';
 
 interface MultiSelectProps {
   users: UserDto[];

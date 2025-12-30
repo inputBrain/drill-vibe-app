@@ -559,8 +559,8 @@ export class ApiClient {
 }
 
 export interface CreateDrill {
-    title?: string | undefined;
-    pricePerMinute?: number;
+    title: string;
+    pricePerMinute: number;
 }
 
 export interface CreateDrillResponse {
@@ -568,9 +568,9 @@ export interface CreateDrillResponse {
 }
 
 export interface CreateUser {
-    email?: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
+    email: string;
+    firstName: string;
+    lastName: string;
 }
 
 export interface CreateUserResponse {
@@ -591,16 +591,16 @@ export interface DeleteUserDrill {
 }
 
 export interface DrillDto {
-    id?: number;
-    title?: string | undefined;
-    pricePerMinute?: number;
-    createdAt?: number;
-    users?: UserDto[] | undefined;
+    id: number;
+    title: string;
+    pricePerMinute: number;
+    createdAt: number;
+    users: UserDto[];
 }
 
 export interface StartDrill {
-    userIds?: number[] | undefined;
-    drillId?: number;
+    userIds: number[];
+    drillId: number;
 }
 
 export interface StartDrillResponse {
@@ -608,8 +608,8 @@ export interface StartDrillResponse {
 }
 
 export interface StopDrill {
-    userIds?: number[] | undefined;
-    drillId?: number;
+    userIds: number[];
+    drillId: number;
 }
 
 export interface StopDrillResponse {
@@ -629,8 +629,8 @@ export interface UpdateDrillResponse {
 export interface UpdateUser {
     userId: number;
     email?: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
+    firstName: string;
+    lastName: string;
 }
 
 export interface UpdateUserResponse {
@@ -638,21 +638,21 @@ export interface UpdateUserResponse {
 }
 
 export interface UserDrillDto {
-    id?: number;
-    userId?: number;
-    user?: UserDto;
-    drillId?: number;
-    drill?: DrillDto;
-    startedAt?: number;
-    stoppedAt?: number | undefined;
+    id: number;
+    userId: number;
+    user: UserDto;
+    drillId: number;
+    drill: DrillDto;
+    startedAt: number;
+    stoppedAt: number;
 }
 
 export interface UserDto {
-    id?: number;
-    email?: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    createdAt?: number;
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    createdAt: number;
 }
 
 export class ApiException extends Error {

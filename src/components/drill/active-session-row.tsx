@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { calculateDuration, formatDuration, parseDate } from '@/lib/utils';
 import { useTimer } from '@/hooks/use-timer';
 import { Square, Play } from 'lucide-react';
-import type { UserDrillDto } from '@/types';
+import type { UserDrillDto } from '@/lib/api-client';
 
 interface ActiveSessionRowProps {
   session: UserDrillDto;
@@ -16,7 +16,7 @@ export function ActiveSessionRow({ session, onStop }: ActiveSessionRowProps) {
   const currentTime = useTimer();
   const isActive = session.stoppedAt === null;
 
-  const duration = calculateDuration(session.startedAt, session.stoppedAt, currentTime);
+  const duration = calculateDuration(session.startedAt ?? 0, session.stoppedAt ?? null, currentTime);
   const formattedDuration = formatDuration(duration);
 
   if (!session.user) {
@@ -25,7 +25,7 @@ export function ActiveSessionRow({ session, onStop }: ActiveSessionRowProps) {
 
   const userName = session.user
     ? `${session.user.firstName} ${session.user.lastName}`
-    : `User #${session.userId}`;
+    : `User #${session.userId ?? 'Unknown'}`;
 
   return (
     <div className="flex items-center justify-between gap-2 p-2 rounded-lg hover:bg-[var(--background-secondary)] transition-colors">
@@ -50,11 +50,11 @@ export function ActiveSessionRow({ session, onStop }: ActiveSessionRowProps) {
           {formattedDuration}
         </span>
 
-        {isActive && (
+        {isActive && session.userId && (
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onStop(session.userId)}
+            onClick={() => onStop(session.userId!)}
             className="ml-1 text-[var(--danger)] hover:text-[var(--danger)] hover:bg-[var(--danger)]/10"
             title="Stop session"
           >

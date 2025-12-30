@@ -51,7 +51,7 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
       await createUser({
         firstName: firstName.trim(),
         lastName: lastName.trim(),
-        email: email.trim() || null,
+        email: email.trim(),
       });
 
       setFirstName('');

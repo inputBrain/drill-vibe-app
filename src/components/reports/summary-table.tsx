@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { calculateCost, calculateDuration, formatCost, formatDuration } from '@/lib/utils';
 import { useTimer } from '@/hooks/use-timer';
 import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
-import type { UserDrillDto } from '@/types';
+import type { UserDrillDto } from '@/lib/api-client';
 
 type SortField = 'drill' | 'sessions' | 'duration' | 'cost';
 type SortDirection = 'asc' | 'desc';

@@ -6,13 +6,15 @@ import { Button } from '@/components/ui/button';
 import { MultiSelect } from '@/components/ui/select';
 import { ActiveSessionRow } from './active-session-row';
 import { Edit, Trash2 } from 'lucide-react';
-import type { DrillDto, UserDto } from '@/types';
+import type { DrillDto, UserDto, UserDrillDto } from '@/lib/api-client';
 import { useDrills } from '@/hooks/use-drills';
 
+type ClientDrillDto = Omit<DrillDto, 'users'> & { users: UserDrillDto[] };
+
 interface DrillCardProps {
-  drill: DrillDto;
+  drill: ClientDrillDto;
   availableUsers: UserDto[];
-  onEdit: (drill: DrillDto) => void;
+  onEdit: (drill: ClientDrillDto) => void;
 }
 
 export function DrillCard({ drill, availableUsers, onEdit }: DrillCardProps) {
@@ -25,14 +27,14 @@ export function DrillCard({ drill, availableUsers, onEdit }: DrillCardProps) {
 
   const activeSessions = drill.users?.filter((ud) => ud.stoppedAt === null) || [];
 
-  const activeUserIds = activeSessions.map((ud) => ud.userId);
+  const activeUserIds = activeSessions.map((ud) => ud.userId).filter((id): id is number => id !== undefined);
 
   const selectableUsers = availableUsers.filter(
-    (user) => !activeUserIds.includes(user.id)
+    (user) => user.id !== undefined && !activeUserIds.includes(user.id)
   );
 
   const handleStart = async () => {
-    if (selectedUserIds.length > 0) {
+    if (selectedUserIds.length > 0 && drill.id !== undefined) {
       setIsStarting(true);
       try {
         await startDrill({ drillId: drill.id, userIds: selectedUserIds });
@@ -44,12 +46,14 @@ export function DrillCard({ drill, availableUsers, onEdit }: DrillCardProps) {
   };
 
   const handleStopUser = (userId: number) => {
-    stopDrill({ drillId: drill.id, userIds: [userId] });
+    if (drill.id !== undefined) {
+      stopDrill({ drillId: drill.id, userIds: [userId] });
+    }
   };
 
   const handleStopAll = async () => {
-    const activeUserIds = activeSessions.map((s) => s.userId);
-    if (activeUserIds.length > 0) {
+    const activeUserIds = activeSessions.map((s) => s.userId).filter((id): id is number => id !== undefined);
+    if (activeUserIds.length > 0 && drill.id !== undefined) {
       setIsStopping(true);
       try {
         await stopDrill({ drillId: drill.id, userIds: activeUserIds });
@@ -60,7 +64,7 @@ export function DrillCard({ drill, availableUsers, onEdit }: DrillCardProps) {
   };
 
   const handleDelete = async () => {
-    if (isDeleting) return;
+    if (isDeleting || drill.id === undefined) return;
 
     if (showDeleteConfirm) {
       setIsDeleting(true);

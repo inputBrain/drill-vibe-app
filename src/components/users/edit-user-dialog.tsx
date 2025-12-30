@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useUsers } from '@/hooks/use-users';
-import type { UserDto } from '@/types';
+import type { UserDto } from '@/lib/api-client';
 
 interface EditUserDialogProps {
   open: boolean;
@@ -62,7 +62,7 @@ export function EditUserDialog({ open, onOpenChange, user }: EditUserDialogProps
         userId: user.id,
         firstName: firstName.trim(),
         lastName: lastName.trim(),
-        email: email.trim() || null,
+        email: email.trim() || undefined,
       });
 
       setErrors({});

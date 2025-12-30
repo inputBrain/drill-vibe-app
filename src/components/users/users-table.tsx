@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { formatDate } from '@/lib/utils';
 import { Trash2, Edit, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
-import type { UserDto } from '@/types';
+import type { UserDto } from '@/lib/api-client';
 import { useUsers } from '@/hooks/use-users';
 
 type SortField = 'id' | 'firstName' | 'lastName' | 'email' | 'createdAt';

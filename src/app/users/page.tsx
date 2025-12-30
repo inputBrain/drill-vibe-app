@@ -9,7 +9,7 @@ import { CreateUserDialog } from '@/components/users/create-user-dialog';
 import { EditUserDialog } from '@/components/users/edit-user-dialog';
 import { useUsers } from '@/hooks/use-users';
 import { Plus } from 'lucide-react';
-import type { UserDto } from '@/types';
+import type { UserDto } from '@/lib/api-client';
 
 export default function UsersPage() {
   const { users, isLoading } = useUsers();
