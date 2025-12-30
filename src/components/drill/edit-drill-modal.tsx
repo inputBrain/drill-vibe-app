@@ -11,12 +11,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useDrills } from '@/hooks/use-drills';
-import type { DrillDto } from '@/lib/api-client';
+import type { DrillDto, UserDrillDto } from '@/lib/api-client';
+
+type ClientDrillDto = Omit<DrillDto, 'users'> & { users: UserDrillDto[] };
 
 interface EditDrillModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  drill: DrillDto | null;
+  drill: ClientDrillDto | null;
 }
 
 export function EditDrillModal({
@@ -31,15 +33,15 @@ export function EditDrillModal({
 
   useEffect(() => {
     if (drill) {
-      setTitle(drill.title);
-      setPricePerMinute(drill.pricePerMinute.toString());
+      setTitle(drill.title ?? '');
+      setPricePerMinute(drill.pricePerMinute?.toString() ?? '');
     }
   }, [drill]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!drill || !title.trim() || !pricePerMinute) {
+    if (!drill || !drill.id || !title.trim() || !pricePerMinute) {
       return;
     }
 
